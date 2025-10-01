@@ -1,81 +1,34 @@
 {% extends "admin/layout.html" %}
 
 {% block title %}
-    Farm Registration | AiGRI
+    Insurance Application | AiGRI
+{% endblock %}
+
+{% block extrastyles %} 
+    <link rel="stylesheet" href="../../static/css/reg-farm.css">
 {% endblock %}
 
 {% block header_title %}
-    Farm Registration System
+    Insurance Application System
 {% endblock %}
 
 {% block main %}
-
-<style>
-    /* Loading Popup Styles */
-    .loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-    }
-
-    .loading-popup {
-        background: white;
-        padding: 40px;
-        border-radius: 8px;
-        text-align: center;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        min-width: 300px;
-    }
-
-    .loading-spinner {
-        width: 40px;
-        height: 40px;
-        border: 4px solid #f3f3f3;
-        border-top: 4px solid var(--primary-color);
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 20px;
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-    .loading-text {
-        color: var(--dark-color);
-        font-size: 1.1rem;
-        margin-bottom: 10px;
-    }
-
-    .loading-subtext {
-        color: #666;
-        font-size: 0.9rem;
-    }
-</style>
-
+<!-- Form container -->
 <div class="form-container">
-    <h2 class="form-title">Register a Farmer</h2>
+    <h2 class="form-title">Verify RSBSA ID</h2>
     
-    <!-- Simple Registration form -->
-    <form action="/register-farm" method="post" id="farm-registration-form">
-        
+    <!-- Start of farm registration form -->
+    <div id="verify-rsbsa">
         <div class="form-group">
             <label for="rsbsa-id">RSBSA ID No.</label>
             <input type="text" id="rsbsa-id" name="rsbsa_id" placeholder="Enter RSBSA ID Number" required>
         </div>
         
         <div class="form-actions">
-            <button type="submit" class="btn-login">Register</button>
+            <button type="submit" class="btn-login" id="rsbsa-confirm">Proceed</button>
         </div>
-    </form>
+    </div>
+
 </div>
 
 <!-- Loading Popup -->
@@ -87,33 +40,295 @@
     </div>
 </div>
 
+<!-- Form container -->
+<!-- Progress bar form container (hidden until RSBSA verification) -->
+<div class="form-container" id="insurance-container" style="display: none;">
+    <div id="insurance-application">
+        <h2 class="form-title">Application for Crop Insurance</h2>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-bar-line"></div> 
+            <div class="progress-step active" data-title="Application Details">1</div>
+            <div class="progress-step" data-title="Farm Info">2</div>
+        </div>
+        
+        <!-- Registration form -->
+        <form action="/admin/register-farm" method="post" id="insurance-application-form">
+        
+            <!-- Step 1: Application Details -->
+            <div class="form-step active">
+                <h3 class="form-title" style="text-align: left; font-size: 1.2rem;">Application Details </h3>
+                
+                <div class="form-group">
+                    <label for="application-type-select">Application Type</label>
+                    <select id="application-type-select" name="application_type">
+                        <option disabled selected>Application Type</option>
+                        <option value="new">New Application</option>
+                        <option value="renewal">Renewal</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="farmer-selection-field" style="display: none;">
+                    <label for="farmer-select">Select Farmer for Renewal</label>
+                    <select id="farmer-select" name="farmer_id">
+                        <option value="" disabled selected>Select Farmer for Renewal</option>
+                        <option value="1">Juan Dela Cruz - CIRS ID: 123456789</option>
+                        <option value="2">Maria Santos - CIRS ID: 987654321</option>
+                        <option value="3">Roberto Garcia - CIRS ID: 456789123</option>
+                        <option value="4">Luzviminda Reyes - CIRS ID: 321654987</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="crop-type-select">Crop Type</label>
+                    <select id="crop-type-select" name="crop_type">
+                        <option disabled selected>Crop Type</option>
+                        <option value="rice">Rice</option>
+                        <option value="corn">Corn</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="financing-method-select">Financing Method</label>
+                    <!-- REVISION 1: Corrected the 'value' attributes for clarity and for the script to work -->
+                    <select id="financing-method-select" name="financing_method">
+                        <option disabled selected>Financing Method</option>
+                        <option value="self-financed">Self-financed</option>
+                        <option value="borrowing">Borrowing</option>
+                    </select>
+                </div>
+                <!-- REVISION 2: Made the Lender field conditional and gave it a proper ID -->
+                <div class="form-group" id="lender-field" style="display: none;">
+                        <label for="lender-name">Lender</label>
+                        <input type="text" id="lender-name" name="lender_name" placeholder="Enter lender's name">
+                </div>
+            </div>
+
+            <!-- 
+            Step 2: Basic Information - A. The Farmer
+            <div class="form-step">
+                <h3 class="form-title" style="text-align: left; font-size: 1.2rem;">I. Basic Information <br><small>A. The Farmer</small></h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="last-name">Last Name</label>
+                        <input type="text" id="last-name" name="last_name" placeholder="Dela Cruz" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="first-name">First Name</label>
+                        <input type="text" id="first-name" name="first_name" placeholder="Juan" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="middle-name">Middle Name</label>
+                        <input type="text" id="middle-name" name="middle_name" placeholder="Santos">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="address">No. & Street/Sitio</label>
+                        <input type="text" id="address" name="address">
+                    </div>
+                    <div class="form-group">
+                        <label for="barangay">Barangay</label>
+                        <input type="text" id="barangay" name="barangay" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="municipality">Municipality</label>
+                        <input type="text" id="municipality" name="municipality" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="province">Province</label>
+                        <input type="text" id="province" name="province" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cell-number">Cellphone Number</label>
+                        <input type="tel" id="cell-number" name="cell_number" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" id="dob" name="dob" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sex">Sex</label>
+                        <select id="sex" name="sex" required>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="civil-status">Civil Status</label>
+                        <select id="civil-status" name="civil_status" required>
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Widow/er">Widow/er</option>
+                            <option value="Separated">Separated</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            -->
+            
+            <!-- Step 3: The Farm -->
+            <!-- Claude modified styles -->
+            <div class="form-step">
+                <h3 class="form-title" style="text-align: left; font-size: 1.2rem;">The Farm <br><small>B.1 - B.2</small></h3>
+                <!-- This section can be duplicated for multiple farm lots -->
+                <div class="farm-lot">
+                    <h4>Farm Lot 1</h4>
+                    <div class="form-group">
+                        <label>Farm Location</label>
+                        <div class="form-row">
+                            <input type="text" name="farm_sitio_1" placeholder="Sitio">
+                            <input type="text" name="farm_barangay_1" placeholder="Barangay" required>
+                            <input type="text" name="farm_municipality_1" placeholder="Municipality" required>
+
+                            <!-- Province data from MAO (officer)-->
+                            <input type="text" name="farm_province_1" placeholder="Province" value="Leyte" disabled required>
+                        </div>
+                    </div>
+                    <div class="form-group" id="b3-variety">
+                        <label for="variety_1">B.3 Variety</label>
+                        <input type="text" id="variety_1" name="variety_1" required>
+                    </div>
+                    
+               
+                    <!-- You can continue adding fields B.8 to B.12 here -->
+                </div>
+                <!-- Add a button here to dynamically add more farm lots if needed -->
+                
+            </div>
+
+            <!-- Step 4: The Coverage -->
+            <!-- 
+            <div class="form-step">
+                <h3 class="form-title" style="text-align: left; font-size: 1.2rem;">C. The Coverage</h3>
+                <p>This section will contain fields for Amount of Cover, Type of Cover, Premium, etc.</p>
+            </div>
+            -->
+            
+            <!-- Navigation Buttons -->
+            <div class="form-actions" style="justify-content: space-between;">
+                <button type="button" class="btn btn-secondary" id="prevBtn" style="display: none;">Previous</button>
+                <button type="button" class="btn btn-primary" id="nextBtn">Next</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- REVISION 3: The entire script is updated for correctness and functionality -->
+<!-- Claude refined script -->
+<!-- To do: polish -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('farm-registration-form');
-    const loadingOverlay = document.getElementById('loading-overlay');
+    // --- FORM NAVIGATION ELEMENTS ---
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const formSteps = document.querySelectorAll('.form-step');
+    const progressSteps = document.querySelectorAll('.progress-step');
+    const progressBarLine = document.querySelector('.progress-bar-line');
+    
+    // --- CONDITIONAL FIELD ELEMENTS ---
+    const applicationTypeSelect = document.getElementById('application-type-select');
+    const farmerSelectionField = document.getElementById('farmer-selection-field');
+    const financingMethodSelect = document.getElementById('financing-method-select');
+    const lenderField = document.getElementById('lender-field');
 
-    form.addEventListener('submit', function(e) {
-        e.preventDefault(); // Prevent default form submission
+    // --- FARM REGISTRATION FORM ELEMENTS ---
+    const verifyRSBSA = document.getElementById('verify-rsbsa');
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const rsbsaConfirm = document.getElementById('rsbsa-confirm');
+    const insContainer = document.getElementById('insurance-container');
+
+    let currentStep = 0;
+
+    // Change instead of POST METHOD
+    rsbsaConfirm.addEventListener('click', function(e) {
+        e.preventDefault();
         
         // Show loading popup
         loadingOverlay.style.display = 'flex';
         
-        // Simulate data fetching (you can adjust the delay)
+        // Simulate data fetching
         setTimeout(() => {
-            // Hide loading popup and submit the form
+            // Hide loading popup
             loadingOverlay.style.display = 'none';
             
-            // Show success message (optional)
-            alert('Farmer registered successfully!');
-            
-            // Reset the form
-            form.reset();
-            
-            // If you want to actually submit to backend, uncomment the line below:
-            // form.submit();
-        }, 3000); // 3 seconds delay for demo
+            // Hide the RSBSA verification container
+            verifyRSBSA.closest('.form-container').style.display = 'none';
+
+            // Show the insurance application container
+            if (insContainer) insContainer.style.display = 'block';
+
+            // Success message
+            alert('RSBSA ID verified successfully! Proceed with the application.');
+        }, 500);
     });
+    
+    // --- EVENT LISTENERS FOR FORM NAVIGATION ---
+    nextBtn.addEventListener('click', () => {
+        if (currentStep < formSteps.length - 1) {
+            currentStep++;
+            updateFormSteps();
+        } else {
+            document.getElementById('insurance-application-form').submit();
+        }
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentStep > 0) {
+            currentStep--;
+            updateFormSteps();
+        }
+    });
+
+    // --- EVENT LISTENERS FOR CONDITIONAL FIELDS ---
+    applicationTypeSelect.addEventListener('change', function() {
+        if (this.value === 'renewal') {
+            farmerSelectionField.style.display = 'block';
+        } else {
+            farmerSelectionField.style.display = 'none';
+        }
+    });
+
+    financingMethodSelect.addEventListener('change', function() {
+        if (this.value === 'borrowing') {
+            lenderField.style.display = 'block';
+        } else {
+            lenderField.style.display = 'none';
+        }
+    });
+    
+    // --- HELPER FUNCTIONS ---
+    function updateFormSteps() {
+        formSteps.forEach((step, index) => {
+            step.classList.toggle('active', index === currentStep);
+        });
+        updateButtons();
+        updateProgressBar();
+    }
+
+    function updateButtons() {
+        prevBtn.style.display = currentStep === 0 ? 'none' : 'inline-block';
+        nextBtn.textContent = currentStep === formSteps.length - 1 ? 'Submit' : 'Next';
+    }
+
+    function updateProgressBar() {
+        progressSteps.forEach((step, index) => {
+            step.classList.toggle('active', index <= currentStep);
+        });
+
+        const activeSteps = document.querySelectorAll('.progress-step.active');
+        const width = ((activeSteps.length - 1) / (progressSteps.length - 1)) * 100;
+        progressBarLine.style.width = width + '%';
+    }
+    
+    updateFormSteps();
 });
 </script>
 
 {% endblock %}
+
+
