@@ -1,10 +1,13 @@
 import os
+import cv2
+
 from flask import Flask, render_template, request, redirect, session
 from flask_session import Session
 
 # custom library
 from helpers import apology, login_required
 from stamp import RegFormStamper
+from farmland_damage_assessment import FarmlandDamageAssessor
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -24,6 +27,7 @@ Session(app)
 
 pdf_path = os.path.join(static_folder_path, 'assets', 'RC-UPI-01_Application-for-Crop-Insurance.pdf')
 stamper = RegFormStamper(pdf_path)
+damage_ass = FarmlandDamageAssessor()
 
 # asset path
 assets_base_path = os.path.join(static_folder_path, 'assets')
@@ -104,7 +108,7 @@ def admin_insurance_application():
             value = request.form.get(field)
             data[field] = value
         
-        # Use context manager - automatic cleanup
+        # Context manager - automatic cleanup
         with RegFormStamper(pdf_path) as stamper:
             stamper.text_search(7, data, "../frontend/static/assets/stamped-sample-method1.pdf")
 
@@ -112,9 +116,41 @@ def admin_insurance_application():
     
     return render_template("/admin/insurance-application.html")
 
-@app.route("/admin/damage-assessment")
+@app.route("/admin/damage-assessment", methods=["GET", "POST"])
 @login_required
 def admin_damage_assessment():
+    if request.method == "POST":
+        import matplotlib
+        matplotlib.use('Agg')  # Set backend before any plotting
+        
+        # Define input image path
+        image_path = "../frontend/static/assets/test_input/farm1.png"
+        output_dir = "../frontend/static/assets/output/"
+
+        os.makedirs(output_dir, exist_ok=True)
+
+        # Output file paths
+        report_output_path = os.path.join(output_dir, "farmland_damage_report.png")
+        map_output_path = os.path.join(output_dir, "damage_map_only.png")
+
+        if not os.path.exists(image_path):
+            print("="*60)
+            print("ERROR: Image file not found!")
+            print("="*60 + "\n")
+        else:
+            try:
+                damage_map, statistics = damage_ass.assess_damage(
+                    image_path=image_path, 
+                    output_path=report_output_path
+                )
+                
+                cv2.imwrite(map_output_path, cv2.cvtColor(damage_map, cv2.COLOR_RGB2BGR))
+                print("Success!!!")
+            except Exception as e:
+                print("="*60)
+                print(e)
+                print("=*60")
+
     return render_template("/admin/damage-assessment.html")
 
 @app.route("/admin/farmers")

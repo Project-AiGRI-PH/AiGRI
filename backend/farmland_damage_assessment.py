@@ -8,7 +8,6 @@ from torchvision.models.segmentation import deeplabv3_resnet101, DeepLabV3_ResNe
 import os
 
 class FarmlandDamageAssessor:
-    
     def __init__(self):
         """Initialize the damage assessment model"""
         # Load pretrained DeepLabV3 model with updated weights parameter
@@ -22,10 +21,12 @@ class FarmlandDamageAssessor:
             transforms.Normalize(mean=[0.485, 0.456, 0.406], 
                                std=[0.229, 0.224, 0.225])
         ])
-        
+    
+    # Noting on documentation notes
     def load_image(self, image_path):
         """Load and preprocess image with proper error handling"""
-        # Check if file exists
+
+        # Early checks for provided image path
         if not os.path.exists(image_path):
             raise FileNotFoundError(
                 f"\n{'='*60}\n"
@@ -41,10 +42,9 @@ class FarmlandDamageAssessor:
                 f"{'='*60}\n"
             )
         
-        # Try to load the image
-        img = cv2.imread(image_path)
+        img = cv2.imread(image_path) # cv2.imread() method loads an image from the specified file.
         
-        # Check if image was loaded successfully
+        # Loaded successfully?
         if img is None:
             raise ValueError(
                 f"\n{'='*60}\n"
@@ -56,17 +56,19 @@ class FarmlandDamageAssessor:
                 f"{'='*60}\n"
             )
         
-        img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) ### converts BGR image to RGB
         print(f"[OK] Image loaded successfully: {img_rgb.shape[1]}x{img_rgb.shape[0]} pixels")
-        return img, img_rgb
+        return img, img_rgb ### Note on return item: returns both BGR and RGB versions
     
     def segment_image(self, img_rgb):
         """Perform semantic segmentation"""
-        # Prepare image for model
+
+        # PyTorch .unsqueeze()
+        ### Visualizaion: Example 1 - https://www.geeksforgeeks.org/machine-learning/what-does-unsqueeze-do-in-pytorch/
         input_tensor = self.transform(img_rgb)
         input_batch = input_tensor.unsqueeze(0)
         
-        # Perform inference
+        ### Perform inference
         with torch.no_grad():
             output = self.model(input_batch)['out'][0]
         
@@ -75,10 +77,11 @@ class FarmlandDamageAssessor:
     
     def analyze_vegetation_health(self, img_rgb):
         """Analyze vegetation health using color analysis"""
-        # Convert to HSV for better vegetation detection
-        hsv = cv2.cvtColor(img_rgb, cv2.COLOR_RGB2HSV)
+
+        hsv = cv2.cvtColor(img_rgb, cv2.COLOR_RGB2HSV) # RGB to HSV
         
-        # Define color ranges for vegetation states
+        ### Define color ranges for vegetation states
+        
         # Healthy vegetation (green)
         healthy_lower = np.array([35, 40, 40])
         healthy_upper = np.array([85, 255, 255])
@@ -88,14 +91,28 @@ class FarmlandDamageAssessor:
         partial_upper = np.array([35, 255, 255])
         
         # Create masks
+        # The ff. returns img files/generates img files
         healthy_mask = cv2.inRange(hsv, healthy_lower, healthy_upper)
         partial_mask = cv2.inRange(hsv, partial_lower, partial_upper)
         
-        # Fully damaged is everything else (very low saturation or different hue)
+        '''
+            Damage map analogy
+
+            - cv2.bitwise_or() is an OpenCV function that performs a bitwise OR operation on two input images 
+            - it compares the corresponding pixels of the two input images, bit by bit, and outputs a new image where each pixel's value is the result of the OR operation.
+            
+            The bitwise OR operation follows these rules for each corresponding bit:
+                - If both bits are 0, the result is 0.
+            - If one bit is 0 and the other is 1, the result is 1.
+            - If both bits are 1, the result is 1.
+        '''
+
+        # Fully damaged is everything else (very low saturation or differents hue)
         damaged_mask = 255 - cv2.bitwise_or(healthy_mask, partial_mask)
         
         return healthy_mask, partial_mask, damaged_mask
     
+    # Map creation
     def create_damage_map(self, img_rgb, healthy_mask, partial_mask, damaged_mask):
         """Create a color-coded damage map"""
         h, w = img_rgb.shape[:2]
@@ -114,6 +131,7 @@ class FarmlandDamageAssessor:
         
         return damage_map, overlay
     
+    # Rough calculation basis
     def calculate_damage_statistics(self, healthy_mask, partial_mask, damaged_mask):
         """Calculate percentage of each damage category"""
         total_pixels = healthy_mask.size
@@ -141,6 +159,7 @@ class FarmlandDamageAssessor:
             'overall_status': overall_status
         }
     
+    # Visualization purposes
     def visualize_results(self, img_rgb, damage_map, overlay, stats):
         """Create visualization of results"""
         fig, axes = plt.subplots(2, 2, figsize=(15, 12))
@@ -219,62 +238,5 @@ class FarmlandDamageAssessor:
         return damage_map, stats
 
 # Example usage
-# Example usage
 if __name__ == "__main__":
-    print("\n" + "="*60)
-    print("FARMLAND DAMAGE ASSESSMENT SYSTEM")
-    print("="*60 + "\n")
-    
-    # Initialize the assessor
-    print("Initializing model...")
-    assessor = FarmlandDamageAssessor()
-    print("[OK] Model loaded successfully\n")
-    
-    # --- PATHS AND DIRECTORIES ---
-    # Define the input image path
-    image_path = "backend\\test_input\\farm1.png"
-
-    # change if necessary
-    image_path = "test_input/farm1.png"
-    
-    # --- BEST PRACTICE: Create the output directory if it doesn't exist ---
-    print(f"[INFO] Ensuring output directory exists at: {output_dir}")
-    os.makedirs(output_dir, exist_ok=True)
-
-    # Define the full output file paths using os.path.join
-    report_output_path = os.path.join(output_dir, "farmland_damage_report.png")
-    map_output_path = os.path.join(output_dir, "damage_map_only.png")
-
-    # Check if the file exists before processing
-    if not os.path.exists(image_path):
-        print("="*60)
-        print("ERROR: Image file not found!")
-        # ... (rest of your error message) ...
-        print("="*60 + "\n")
-    else:
-        try:
-            damage_map, statistics = assessor.assess_damage(
-                image_path=image_path, 
-                output_path=report_output_path # Use the new path variable
-            )
-            
-            # Save individual damage map
-            cv2.imwrite(map_output_path, cv2.cvtColor(damage_map, cv2.COLOR_RGB2BGR))
-            
-            print("\n" + "="*60)
-            print("[OK] PROCESSING COMPLETE!")
-            print("="*60)
-            print("Generated files saved in 'backend/output' folder:")
-            print(f"  - {os.path.basename(report_output_path)} (full report)")
-            print(f"  - {os.path.basename(map_output_path)} (damage map only)")
-            print("="*60 + "\n")
-            
-        except Exception as e:
-            print(f"\n{'='*60}")
-            print("ERROR DURING PROCESSING:")
-            print("="*60)
-            print(f"{str(e)}")
-            print("\nTroubleshooting:")
-            print(" - Ensure you have write permissions for the project folder.")
-            print(" - Check for issues with the input image file.")
-            print("="*60 + "\n")
+    print("Initializing...")

@@ -11,7 +11,7 @@ class RegFormStamper:
         """Context manager entry"""
         return self
     
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self):
         """Context manager exit - ensures document is closed"""
         self.close()
         return False
