@@ -44,6 +44,11 @@ To contribute
 > **Note**
 > If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
 
+## AI Use
+- Claude.ai (used in troubleshooting issues in VS Code)
+- Copilot (used for debugging)
+
+
 ## Credits
 
 This software uses the following open source packages:
