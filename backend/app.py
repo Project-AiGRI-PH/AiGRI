@@ -48,7 +48,7 @@ def login():
 
     # GET request
     return render_template("login.html")
- 
+
 @app.route("/admin/dashboard")
 @login_required
 def admin_dashboard():
