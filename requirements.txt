@@ -1,3 +1,9 @@
 Flask
 Flask-Session
 PyMuPDF
+numpy
+matplotlib
+Pillow
+torch
+torchvision
+opencv-python
