@@ -51,6 +51,24 @@ def admin_dashboard():
     email = session.get("email", "demo@lgu.gov.ph")
     return render_template("admin/dashboard.html", email=email)
 
+@app.route("/admin/register-farm")
+@login_required
+def admin_register_farm():
+    email = session.get("email", "demo@lgu.gov.ph")
+    return render_template("admin/register-farm.html", email=email)
+
+@app.route("/admin/damage-assessment")
+@login_required
+def admin_damage_assessment():
+    email = session.get("email", "demo@lgu.gov.ph")
+    return render_template("admin/damage-assessment.html", email=email)
+
+@app.route("/admin/farmers")
+@login_required
+def admin_farmers():
+    email = session.get("email", "demo@lgu.gov.ph")
+    return render_template("admin/farmers.html", email=email)
+
 @app.route("/logout")
 def logout():
     """Log user out"""
