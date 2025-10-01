@@ -6,8 +6,6 @@ import torch
 import torchvision.transforms as transforms
 from torchvision.models.segmentation import deeplabv3_resnet101, DeepLabV3_ResNet101_Weights
 import os
-import sys
-
 
 class FarmlandDamageAssessor:
     
@@ -236,8 +234,8 @@ if __name__ == "__main__":
     # Define the input image path
     image_path = "backend\\test_input\\farm1.png"
 
-    # Define the output directory using a relative path
-    output_dir = os.path.join("backend", "output")
+    # change if necessary
+    image_path = "test_input/farm1.png"
     
     # --- BEST PRACTICE: Create the output directory if it doesn't exist ---
     print(f"[INFO] Ensuring output directory exists at: {output_dir}")
