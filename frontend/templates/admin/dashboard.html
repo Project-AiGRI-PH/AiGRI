@@ -1,0 +1,92 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}
+    Municipal Office Dashboard | AiGRI
+{% endblock %}
+    {% block navlist %}
+        <li><a href="/">Home></li>
+        <li><a href="/">About></li>
+    {% endblock %}
+    
+    {% block header_title %}
+        Municipal Office Dashboard
+    {% endblock %}
+    
+    {% block main %}
+        <div class="dashboard-cards">
+            <div class="dashboard-card">
+                <h3>Registered Farms</h3>
+                <div class="card-value" id="total-farms">0</div>
+                <div class="card-description">In your municipality</div>
+            </div>
+            <div class="dashboard-card">
+                <h3>Active Assessments</h3>
+                <div class="card-value" id="active-assessments">0</div>
+                <div class="card-description">Currently processing</div>
+            </div>
+            <div class="dashboard-card">
+                <h3>Completed Claims</h3>
+                <div class="card-value" id="completed-claims">0</div>
+                <div class="card-description">This month</div>
+            </div>
+            <div class="dashboard-card">
+                <h3>Farmers Served</h3>
+                <div class="card-value" id="farmers-served">0</div>
+                <div class="card-description">This year</div>
+            </div>
+        </div>
+
+        <div class="recent-activity">
+            <h2>Recent Activity</h2>
+            <div class="activity-item">
+                <div class="activity-icon">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <div class="activity-details">
+                    <h4>New Farm Registered</h4>
+                    <p>Juan Dela Cruz - 2.5 hectares - Today, 10:30 AM</p>
+                    <p>{{ email }}</p>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon">
+                    <i class="fas fa-clipboard-check"></i>
+                </div>
+                <div class="activity-details">
+                    <h4>Damage Assessment Completed</h4>
+                    <p>Maria Santos - Typhoon Damage - Yesterday, 3:45 PM</p>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="activity-details">
+                    <h4>Claim Submitted to PCIC</h4>
+                    <p>Roberto Garcia - ₱25,000 claim - Yesterday, 11:20 AM</p>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="activity-details">
+                    <h4>Claim Approved</h4>
+                    <p>Luzviminda Reyes - ₱18,500 payout - 2 days ago</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="weather-alert">
+            <h2>Weather Alerts</h2>
+            <div class="alert alert-warning">
+                <strong>Typhoon Warning:</strong> Tropical Storm 'Odette' is expected to make landfall in your area within 48 hours.
+            </div>
+            <div class="alert alert-info">
+                <strong>Dry Spell Advisory:</strong> The next 2 weeks are forecast to have below-average rainfall.
+            </div>
+        </div>
+    </div>
+
+    <!-- Add script -->
+    {% endblock %}

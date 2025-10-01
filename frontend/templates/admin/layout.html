@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="../../static/css/styles.css">
+    <link rel="stylesheet" href="../../static/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../../static/leaflet-overrides.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+</head>
+
+<body class="dashboard">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>AiGRI Portal</h2>
+            <p>Municipal Agriculture Office</p>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <!-- Sidebar nav list issue -->
+                <!-- Src: 
+                 Claude Code 
+                 Endpoints on Flask: https://stackoverflow.com/questions/19261833/what-is-an-endpoint-in-flask
+                 -->
+                <li><a href="/dashboard" class="{% if request.endpoint == 'dashboard' %}active{% endif %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="/register-farm" class="{% if request.endpoint == 'register_farm' %}active{% endif %}"><i class="fas fa-map-marked-alt"></i> Register Farm</a></li>
+                <li><a href="/assess-damage" class="{% if request.endpoint == 'assess_damage' %}active{% endif %}"><i class="fas fa-clipboard-check"></i> Damage Assessment</a></li>
+                <li><a href="#"><i class="fas fa-users"></i> Farmers</a></li>
+                <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li> <!-- Session and cookies -->
+            </ul>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="content-header">
+            <h1>{% block header_title%} {% endblock %}</h1>
+            <div class="user-profile">
+                <img src="../../static/assets/user-avatar.jpg" alt="User Avatar">
+                <span>Municipal Agriculture Officer</span>
+            </div>
+        </div>
+        {% block main %} {% endblock %}
+    </div>
+
+</body>
+</html>
