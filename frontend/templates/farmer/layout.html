@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="../../static/css/styles.css">
+    <link rel="stylesheet" href="../../static/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../../static/leaflet-overrides.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+</head>
+
+<body class="dashboard">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>AiGRI Portal</h2>
+            <p>Farmer Dashboard</p>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="/farmer/dashboard" class="{% if request.endpoint == 'farmer_dashboard' %}active{% endif %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="/insurance-status" class="{% if request.endpoint == 'insurance_status' %}active{% endif %}"><i class="fas fa-shield-alt"></i> Insurance Status</a></li>
+                <li><a href="/farmer/user-profile" class="{% if request.endpoint == 'farmer_profile' %}active{% endif %}"><i class="fas fa-user"></i> My Profile</a></li>
+                <li><a href="/farmer/documents" class="{% if request.endpoint == 'farmer_documents' %}active{% endif %}"><i class="fas fa-file-alt"></i> Documents</a></li>
+                <li><a href="/farmer/transaction-history" class="{% if request.endpoint == 'farmer_transactions' %}active{% endif %}"><i class="fas fa-history"></i> Transaction History</a></li>
+                <li><a href="#"><i class="fas fa-phone"></i> Contact LGU</a></li>
+                <li><a href="#"><i class="fas fa-question-circle"></i> Help</a></li>
+                <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="content-header">
+            <h1>{% block header_title%} {% endblock %}</h1>
+            <div class="user-profile">
+                <img src="../../static/assets/user-avatar.jpg" alt="User Avatar">
+                <span>{{ username or 'Demo Farmer' }}</span>
+            </div>
+        </div>
+        {% block main %} {% endblock %}
+    </div>
+
+</body>
+</html>

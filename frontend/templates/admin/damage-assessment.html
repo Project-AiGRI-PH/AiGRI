@@ -133,6 +133,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="saveReport()">Save Report</button>
                     <button class="btn btn-primary" onclick="exportToPDF()">Export as PDF</button>
                     <button class="btn btn-secondary" onclick="closeReportModal()">Close</button>
                 </div>
@@ -301,9 +302,6 @@
                 // Get the farm boundary image element
                 const farmBoundaryImg = document.getElementById('farm-boundary-img');
 
-                // On page load, ensure the image is hidden
-                // The 'display: none;' in the style attribute handles initial load, 
-                // but this ensures consistency if JS loads later or something overrides
                 if (farmBoundaryImg) {
                     farmBoundaryImg.style.display = 'none';
                     console.log('Farm boundary hidden on page load');
@@ -414,7 +412,7 @@
 
             function exportToPDF() {
                 // Simulate PDF export
-                alert('PDF export functionality would be implemented here. Report will be downloaded as PDF.');
+                alert('PDF export functionality.');
                 console.log('PDF export initiated');
                 
                 // In a real implementation, you could use libraries like:
@@ -427,6 +425,12 @@
                 setTimeout(() => {
                     window.print();
                 }, 500);
+            }
+
+            function saveReport() {
+                alert('Save report functionality.');
+                console.log('Save report initiated');
+                // Implement save report logic here
             }
 
             function validateForm(form) {

@@ -1,0 +1,37 @@
+{% extends "farmer/layout.html" %}
+
+{% block title %}
+    Insurance Status | AiGRI Farmer Portal
+{% endblock %}
+
+{% block header_title %}
+    Insurance Status
+{% endblock %}
+
+{% block main %}
+    <div class="dashboard-cards">
+        <div class="dashboard-card">
+            <h3>Current Policy Status</h3>
+            <div class="card-value" style="color: var(--success-color);">Active</div>
+            <div class="card-description">Policy #: PCIC-2024-{{ username }}-001</div>
+        </div>
+        <div class="dashboard-card">
+            <h3>Coverage Amount</h3>
+            <div class="card-value">₱15,000</div>
+            <div class="card-description">Per hectare coverage</div>
+        </div>
+        <!--
+        <div class="dashboard-card">
+            <h3>Premium Paid</h3>
+            <div class="card-value">₱450</div>
+            <div class="card-description">For current season</div>
+        </div>
+        -->
+        <div class="dashboard-card">
+            <h3>Claims Status</h3>
+            <div class="card-value" style="color: var(--info-color);">No Active Claims</div>
+            <div class="card-description">All claims processed</div>
+        </div>
+    </div>
+
+{% endblock %}
