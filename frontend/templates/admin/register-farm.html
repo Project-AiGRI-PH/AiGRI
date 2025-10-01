@@ -1,0 +1,119 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}
+    Farm Registration | AiGRI
+{% endblock %}
+
+{% block header_title %}
+    Farm Registration System
+{% endblock %}
+
+{% block main %}
+
+<style>
+    /* Loading Popup Styles */
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .loading-popup {
+        background: white;
+        padding: 40px;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        min-width: 300px;
+    }
+
+    .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid var(--primary-color);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+        color: var(--dark-color);
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+
+    .loading-subtext {
+        color: #666;
+        font-size: 0.9rem;
+    }
+</style>
+
+<div class="form-container">
+    <h2 class="form-title">Register a Farmer</h2>
+    
+    <!-- Simple Registration form -->
+    <form action="/register-farm" method="post" id="farm-registration-form">
+        
+        <div class="form-group">
+            <label for="rsbsa-id">RSBSA ID No.</label>
+            <input type="text" id="rsbsa-id" name="rsbsa_id" placeholder="Enter RSBSA ID Number" required>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn-login">Register</button>
+        </div>
+    </form>
+</div>
+
+<!-- Loading Popup -->
+<div class="loading-overlay" id="loading-overlay">
+    <div class="loading-popup">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Fetching Data</div>
+        <div class="loading-subtext">Please wait while we process your request...</div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('farm-registration-form');
+    const loadingOverlay = document.getElementById('loading-overlay');
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent default form submission
+        
+        // Show loading popup
+        loadingOverlay.style.display = 'flex';
+        
+        // Simulate data fetching (you can adjust the delay)
+        setTimeout(() => {
+            // Hide loading popup and submit the form
+            loadingOverlay.style.display = 'none';
+            
+            // Show success message (optional)
+            alert('Farmer registered successfully!');
+            
+            // Reset the form
+            form.reset();
+            
+            // If you want to actually submit to backend, uncomment the line below:
+            // form.submit();
+        }, 3000); // 3 seconds delay for demo
+    });
+});
+</script>
+
+{% endblock %}

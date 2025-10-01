@@ -1,0 +1,143 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}
+    Damage Assessment | AiGRI
+{% endblock %}
+
+    {% block header_title %}
+        Damage Assessment
+    {% endblock %}
+
+    {% block main %}
+        <div class="form-container">
+            <h2 class="form-title">Initiate New Assessment</h2>
+            
+            <form id="damage-assessment-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="farmer-select">Select Farmer</label>
+                        <select id="farmer-select" required>
+                            <option value="">Select farmer</option>
+                            <option value="1">Juan Dela Cruz - RSBSA ID No.: 123456789</option>
+                            <option value="2">Maria Santos - RSBSA ID No.: 987654321</option>
+                            <option value="3">Roberto Garcia - RSBSA ID No.: 456789123</option>
+                            <option value="4">Luzviminda Reyes - RSBSA ID No.: 321654987</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="disaster-type">Disaster Type</label>
+                        <select id="disaster-type" required>
+                            <option value="">Select disaster</option>
+                            <option value="typhoon">Typhoon</option>
+                            <option value="drought">Drought</option>
+                            <option value="flood">Flood</option>
+                            <option value="pest">Pest Infestation</option>
+                            <option value="disease">Crop Disease</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                    
+                <div class="form-group">
+                    <label for="disaster-date">Date of Disaster</label>
+                    <input type="date" id="disaster-date" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Post Disaster Images</label>
+                    <input type="file" id="after-images" multiple accept="image/*" required>
+                    <p class="help-text">Upload images of the farm after the disaster</p>
+                </div>
+                
+                <div class="form-group">
+                    <label>Farm Boundary</label>
+                    <div class="map-container" id="damage-map"></div>
+                    <p class="help-text">Farm boundary will be automatically loaded</p>
+                </div>
+                
+                <input type="hidden" id="boundary-coords" value='[{"lat":12.8797,"lng":121.774},{"lat":12.8807,"lng":121.775},{"lat":12.8817,"lng":121.773},{"lat":12.8807,"lng":121.772}]'>
+                <input type="hidden" id="before-image-url">
+                <input type="hidden" id="after-image-url">
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit for Assessment</button>
+                </div>
+            </form>
+        </div>
+        
+
+        <script>
+            // Check authentication on page load
+            document.addEventListener('DOMContentLoaded', function() {
+                checkAuth();
+                
+                // Initialize form submission
+                const form = document.getElementById('damage-assessment-form');
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    // Validate form
+                    if (!validateForm(form)) {
+                        return;
+                    }
+                    
+                    // Prepare assessment data
+                    const assessmentData = {
+                        farmerId: document.getElementById('farmer-select').value,
+                        disasterType: document.getElementById('disaster-type').value,
+                        disasterDate: document.getElementById('disaster-date').value,
+                        boundaryCoordinates: JSON.parse(document.getElementById('boundary-coords').value),
+                        beforeImages: document.getElementById('before-image-url').value,
+                        afterImages: document.getElementById('after-image-url').value
+                    };
+                    
+                    try {
+                        // Simulate API call - replace with actual API call in production
+                        console.log('Submitting assessment data:', assessmentData);
+                        
+                        // Show success message
+                        alert('Assessment successfully submitted! AI processing will begin shortly.');
+                        
+                        // Redirect to dashboard after 2 seconds
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html';
+                        }, 2000);
+                    } catch (error) {
+                        console.error('Error submitting assessment:', error);
+                        alert('Error submitting assessment. Please try again.');
+                    }
+                });
+                
+                // Handle image uploads (simulated)
+                document.getElementById('before-images').addEventListener('change', function() {
+                    // In a real implementation, this would upload to your backend
+                    console.log('Before images selected:', this.files);
+                    document.getElementById('before-image-url').value = 'https://example.com/before.jpg';
+                });
+                
+                document.getElementById('after-images').addEventListener('change', function() {
+                    // In a real implementation, this would upload to your backend
+                    console.log('After images selected:', this.files);
+                    document.getElementById('after-image-url').value = 'https://example.com/after.jpg';
+                });
+            });
+ 
+            function validateForm(form) {
+                let isValid = true;
+                
+                // Check required fields
+                const requiredFields = form.querySelectorAll('[required]');
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        field.classList.add('error');
+                        isValid = false;
+                    } else {
+                        field.classList.remove('error');
+                    }
+                });
+                
+                return isValid;
+            }
+        </script>
+    {% endblock %}
