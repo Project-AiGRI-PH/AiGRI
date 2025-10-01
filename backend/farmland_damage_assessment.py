@@ -6,8 +6,6 @@ import torch
 import torchvision.transforms as transforms
 from torchvision.models.segmentation import deeplabv3_resnet101, DeepLabV3_ResNet101_Weights
 import os
-import sys
-
 
 class FarmlandDamageAssessor:
     
@@ -238,7 +236,7 @@ if __name__ == "__main__":
     # Relative: "farmland.jpg" (if in same folder as script)
 
     # change if necessary
-    image_path = "C:/Users/Desirre Barbosa/Desktop/project aigri/estimation/farm1.png"
+    image_path = "test_input/farm1.png"
     
     # Check if the file exists before processing
     if not os.path.exists(image_path):

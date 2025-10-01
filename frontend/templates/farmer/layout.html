@@ -15,17 +15,14 @@
     <div class="sidebar">
         <div class="sidebar-header">
             <h2>AiGRI Portal</h2>
-            <p>Farmer</p>
         </div>
         <nav class="sidebar-nav">
             <ul>
                 <li><a href="/farmer/dashboard" class="{% if request.endpoint == 'farmer_dashboard' %}active{% endif %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                 <li><a href="/farmer/insurance-status" class="{% if request.endpoint == 'insurance_status' %}active{% endif %}"><i class="fas fa-shield-alt"></i> Insurance Status</a></li>
-                <li><a href="/farmer/my-profile" class="{% if request.endpoint == 'farmer_profile' %}active{% endif %}"><i class="fas fa-user"></i> My Profile</a></li>
                 <li><a href="/farmer/documents" class="{% if request.endpoint == 'farmer_documents' %}active{% endif %}"><i class="fas fa-file-alt"></i> Documents</a></li>
-                <li><a href="/farmer/transaction-history" class="{% if request.endpoint == 'farmer_transactions' %}active{% endif %}"><i class="fas fa-history"></i> Transaction History</a></li>
-                <li><a href="#"><i class="fas fa-phone"></i> Contact LGU</a></li>
-                <li><a href="#"><i class="fas fa-question-circle"></i> Help</a></li>
+                <li><a href="/farmer/payout-history" class="{% if request.endpoint == 'farmer_transactions' %}active{% endif %}"><i class="fas fa-history"></i> Payout History</a></li>
+                <li><a href="/farmer/profile" class="{% if request.endpoint == 'farmer_profile' %}active{% endif %}"><i class="fas fa-user"></i> Profile</a></li>
                 <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </nav>

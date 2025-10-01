@@ -1,0 +1,51 @@
+{% extends "farmer/layout.html" %}
+
+{% block title %}
+    Transaction History | AiGRI Farmer Portal
+{% endblock %}
+
+{% block header_title %}
+    Payout History
+{% endblock %}
+
+{% block main %}
+    <div class="dashboard-cards">
+        <div class="dashboard-card">
+            <h3>Annual Insurance Payout</h3>
+            <div class="card-value" style="color: var(--success-color);">₱11,200</div>
+        </div>
+    </div>
+
+    <div class="recent-activity">
+        <h3>Recent Transactions</h3>
+
+        <div class="activity-item">
+            <div class="activity-icon"> 
+                <span style="color: var(--success-color); font-size: 20px;">💰</span>
+            </div>
+            <div class="activity-details">
+                <h4>Insurance Payout Received</h4>
+                <p><strong>₱3,200</strong> - Drought damage compensation for 0.8 hectares</p>
+                <small style="color: #666;">November 15, 2023 | Reference: CLM-2023-002</small>
+            </div>
+        </div>
+
+        <div class="activity-item">
+            <div class="activity-icon"> 
+                <span style="color: var(--success-color); font-size: 20px;">💰</span>
+            </div>
+            <div class="activity-details">
+                <h4>Insurance Payout Received</h4>
+                <p><strong>₱8,000</strong> - Drought damage compensation for 2 hectares</p>
+                <small style="color: #666;">November 15, 2023 | Reference: CLM-2023-002</small>
+            </div>
+        </div>
+
+        
+        
+    </div>
+
+    <div style="margin-top: 30px; text-align: center;">
+        <button class="btn-secondary" onclick="alert('Transaction export.')">Export Payout History</button>
+    </div>
+{% endblock %}

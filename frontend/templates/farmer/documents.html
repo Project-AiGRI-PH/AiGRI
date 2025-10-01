@@ -5,18 +5,19 @@
 {% endblock %}
 
 {% block header_title %}
-    My Documents
+    Documents
 {% endblock %}
 
 {% block main %}
     <div class="dashboard-cards">
         <div class="dashboard-card">
-            <h3>Insurance Certificate</h3>
-            <div class="card-description">Your official crop insurance certificate</div>
+            <h3>Insurance Application Form</h3>
+            <div class="card-description">Official copy of insurance application form</div>
             <div style="margin-top: 15px;">
-                <button class="btn-primary" onclick="alert('Certificate download.')">Download PDF</button>
+                <button class="btn-primary" onclick="alert('Farm registration download.')">Download PDF</button>
             </div>
         </div>
+
         <div class="dashboard-card">
             <h3>Policy Documents</h3>
             <div class="card-description">Terms and conditions of your insurance policy</div>
@@ -24,18 +25,12 @@
                 <button class="btn-primary" onclick="alert('Policy document download.')">Download PDF</button>
             </div>
         </div>
+
         <div class="dashboard-card">
-            <h3>Farm Registration</h3>
-            <div class="card-description">Official farm registration certificate</div>
+            <h3>Insurance Certificate</h3>
+            <div class="card-description">Official crop insurance certificate</div>
             <div style="margin-top: 15px;">
-                <button class="btn-primary" onclick="alert('Farm registration download.')">Download PDF</button>
-            </div>
-        </div>
-        <div class="dashboard-card">
-            <h3>Claim History</h3>
-            <div class="card-description">Records of all processed claims</div>
-            <div style="margin-top: 15px;">
-                <button class="btn-primary" onclick="alert('Claim history download.)">Download PDF</button>
+                <button class="btn-primary" onclick="alert('Certificate download.')">Download PDF</button>
             </div>
         </div>
     </div>
@@ -62,25 +57,6 @@
                 <small style="color: #666;">September 28, 2024</small>
             </div>
         </div>
-        <div class="activity-item">
-            <div class="activity-icon">
-                <i></i>
-            </div>
-            <div class="activity-details">
-                <h4>Farm Registration Renewed</h4>
-                <p>Your farm registration has been renewed for the current agricultural year.</p>
-                <small style="color: #666;">September 15, 2024</small>
-            </div>
-        </div>
-        <div class="activity-item">
-            <div class="activity-icon">
-                <i></i>
-            </div>
-            <div class="activity-details">
-                <h4>Claim Receipt Generated</h4>
-                <p>Official receipt for your insurance claim payment has been generated.</p>
-                <small style="color: #666;">August 20, 2024</small>
-            </div>
-        </div>
+
     </div>
 {% endblock %}

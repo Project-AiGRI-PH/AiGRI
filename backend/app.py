@@ -52,9 +52,6 @@ def login():
 
 @app.route("/admin/login", methods=["POST"])
 def admin_login():
-    if "email" in session:
-        return redirect("/admin/dashboard")
-
     if request.method == "POST":
         demo_email = "demo@lgu.gov.ph"
         session["email"] = demo_email
@@ -65,9 +62,6 @@ def admin_login():
 
 @app.route("/farmer/login", methods=["POST"])
 def farmer_login():
-    if "username" in session:
-        return redirect("/farmer/dashboard")
-
     if request.method == "POST":
         demo_username = "juan"
         session["username"] = demo_username
@@ -141,20 +135,20 @@ def farmer_dashboard():
 def farmer_insurance_status():
     return render_template("/farmer/insurance-status.html")
 
-@app.route("/farmer/my-profile")
+@app.route("/farmer/profile")
 @login_required
-def farmer_my_profile():
-    return render_template("/farmer/my-profile.html")
+def farmer_profile():
+    return render_template("/farmer/profile.html")
 
 @app.route("/farmer/documents")
 @login_required
 def farmer_documents():
     return render_template("/farmer/documents.html")
 
-@app.route("/farmer/transaction-history")
+@app.route("/farmer/payout-history")
 @login_required
-def farmer_transaction_history():
-    return render_template("/farmer/transaction-history.html")
+def farmer_payout_history():
+    return render_template("/farmer/payout-history.html")
 
 @app.route("/logout")
 def logout():
