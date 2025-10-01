@@ -4,6 +4,7 @@ from flask_session import Session
 
 # custom library
 from helpers import apology, login_required
+from stamp import RegFormStamper
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -20,6 +21,9 @@ app.config["SESSION_TYPE"] = "filesystem"       # Set to "filesystem" so that se
 
 # Initialize Flask-Session
 Session(app)
+
+pdf_path = os.path.join(static_folder_path, 'assets', 'RC-UPI-01_Application-for-Crop-Insurance.pdf')
+stamper = RegFormStamper(pdf_path)
 
 # asset path
 assets_base_path = os.path.join(static_folder_path, 'assets')
@@ -48,26 +52,25 @@ def login():
 @app.route("/admin/dashboard")
 @login_required
 def admin_dashboard():
-    email = session.get("email", "demo@lgu.gov.ph")
-    return render_template("admin/dashboard.html", email=email)
+    if request.method == "POST":
+        pass
+    # email = session.get("email", "demo@lgu.gov.ph")
+    return render_template("admin/dashboard.html")
 
-@app.route("/admin/register-farm")
+@app.route("/admin/register-farm", methods=["GET", "POST"])
 @login_required
 def admin_register_farm():
-    email = session.get("email", "demo@lgu.gov.ph")
-    return render_template("admin/register-farm.html", email=email)
+    return render_template("admin/register-farm.html")
 
 @app.route("/admin/damage-assessment")
 @login_required
 def admin_damage_assessment():
-    email = session.get("email", "demo@lgu.gov.ph")
-    return render_template("admin/damage-assessment.html", email=email)
+    return render_template("admin/damage-assessment.html")
 
 @app.route("/admin/farmers")
 @login_required
 def admin_farmers():
-    email = session.get("email", "demo@lgu.gov.ph")
-    return render_template("admin/farmers.html", email=email)
+    return render_template("admin/farmers.html")
 
 @app.route("/logout")
 def logout():
