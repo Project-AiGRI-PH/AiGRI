@@ -498,5 +498,5 @@ html {
 }
 
 #about, #how-it-works {
-    scroll-margin-top: 80px; /* Adjust this value to control where the scroll stops */
+    scroll-margin-top: 80px; 
 }

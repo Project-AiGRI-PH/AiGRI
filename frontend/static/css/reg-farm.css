@@ -154,12 +154,10 @@
     text-align: center;
 }
 
-/* Hide all form steps by default */
 .form-step {
     display: none;
 }
 
-/* Show the active form step */
 .form-step.active {
     display: block;
 }
