@@ -60,25 +60,32 @@ def admin_dashboard():
 @login_required
 def admin_insurance_application():
     if request.method == "POST":   
-        # do the stamping
-        
-        # Checkboxes
-        # Taking the value instead of the field name
-        p1_boxes = [
-            "farm_sitio_1", "farm_barangay_1", "farm_municipality_1", # Part 1
+        form_fields = [
+            "farm_sitio_1", "farm_barangay_1", "farm_municipality_1", "farm_north_1", "farm_south_1", "farm_east_1", "farm_west_1", "farm_variety_1",
         ]
         
-        p1_data = {}
-        for box in p1_boxes:
-            value = request.form.get(box)
-            p1_data[box] = value
+        data = {
+            "farmer_last": "DELA CRUZ",
+            "farmer_first": "JUAN",
+            "farmer_middle": "SANTOS",
+            "farmer_sitio": "Sitio 1",
+            "farmer_barangay": "Barangay 2",
+            "farmer_municipality": "Municipality 3",
+            "farmer_province": "Province 4",
+            "farmer_cell": "09123456789",
+            "farmer_bank name": "LandBank of the Philippines",
+            "farmer_bank account No.": "12345",
+            "farmer_bank branch / address": "Cebu City",
+            "farm_province": "Leyte"
+        }
 
-        print(p1_data)
-
-        try:
-            stamper.text_search(7, 1, p1_data, "../frontend/static/assets/stamped-sample-method1.pdf")
-        finally:
-            stamper.close()
+        for field in form_fields:
+            value = request.form.get(field)
+            data[field] = value
+        
+        # Use context manager - automatic cleanup
+        with RegFormStamper(pdf_path) as stamper:
+            stamper.text_search(7, data, "../frontend/static/assets/stamped-sample-method1.pdf")
 
         return redirect("/admin/dashboard")
     
