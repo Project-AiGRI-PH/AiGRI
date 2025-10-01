@@ -30,6 +30,12 @@ assets_base_path = os.path.join(static_folder_path, 'assets')
 
 @app.route("/")
 def index():
+    # If user is already logged in, redirect accordingly
+    if "email" in session:
+        return redirect("/admin/dashboard")
+    if "username" in session:
+        return redirect("/farmer/dashboard")
+
     return render_template("index.html")
 
 @app.route("/login")
