@@ -68,9 +68,21 @@ img {
     color: white;
 }
 
+.btn-primary:hover {
+    background-color: #1e5a2f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(44, 125, 63, 0.3);
+}
+
 .btn-secondary {
     background-color: var(--secondary-color);
     color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #e6951d;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 166, 35, 0.3);
 }
 
 .btn-login {
@@ -80,10 +92,15 @@ img {
     border-radius: 4px;
 }
 
+.btn-login:hover {
+    background-color: #222;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(51, 51, 51, 0.3);
+}
+
 /* Header */
 .main-header {
     background-color: #1f5a2d;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     position: fixed;
     top: 0;
     width: 100%;
@@ -111,10 +128,17 @@ img {
     font-weight: 500;
     padding: 8px 16px;
     border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.nav-menu li a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    color: var(--logo-name-color);
 }
 
 .about-section {
-    margin-top: 30px;
+    margin-top: 50px;
 }
 
 .logo {
@@ -127,16 +151,26 @@ img {
     height: 40px;
 }
 
-.logo span {
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.logo .brand-name {
     font-size: 2.50rem;
     color: var(--light-color);
     font-weight: 600;
+    line-height: 1;
 }
 
 .logo .tagline {
     font-size: 0.9rem;
     font-weight: 400;
     opacity: 0.8;
+    color: var(--light-color);
+    line-height: 1.2;
+    margin-top: 2px;
 }
 
 
@@ -153,7 +187,7 @@ nav a {
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../assets/background-farmers.jpg');
+    background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('../assets/background-farmers.gif');
     background-size: cover;
     background-position: center;
     color: white;
@@ -210,6 +244,14 @@ nav a {
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    background: #fafafa;
 }
 
 .stat-card h3 {
@@ -238,6 +280,14 @@ nav a {
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     position: relative;
     border-top: 3px solid var(--primary-color);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.step:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    border-top-width: 5px;
 }
 
 .step-number {
@@ -311,6 +361,13 @@ nav a {
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.login-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
 }
 
 .card-icon {
