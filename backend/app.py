@@ -48,29 +48,51 @@ def login():
 
     # GET request
     return render_template("login.html")
-
+ 
 @app.route("/admin/dashboard")
 @login_required
 def admin_dashboard():
-    if request.method == "POST":
-        pass
     # email = session.get("email", "demo@lgu.gov.ph")
-    return render_template("admin/dashboard.html")
+    return render_template("/admin/dashboard.html")
 
-@app.route("/admin/register-farm", methods=["GET", "POST"])
+# To do: POST method action for
+@app.route("/admin/insurance-application", methods=["GET", "POST"])
 @login_required
-def admin_register_farm():
-    return render_template("admin/register-farm.html")
+def admin_insurance_application():
+    if request.method == "POST":   
+        # do the stamping
+        
+        # Checkboxes
+        # Taking the value instead of the field name
+        p1_boxes = [
+            "farm_sitio_1", "farm_barangay_1", "farm_municipality_1", # Part 1
+        ]
+        
+        p1_data = {}
+        for box in p1_boxes:
+            value = request.form.get(box)
+            p1_data[box] = value
+
+        print(p1_data)
+
+        try:
+            stamper.text_search(7, 1, p1_data, "../frontend/static/assets/stamped-sample-method1.pdf")
+        finally:
+            stamper.close()
+
+        return redirect("/admin/dashboard")
+    
+    return render_template("/admin/insurance-application.html")
 
 @app.route("/admin/damage-assessment")
 @login_required
 def admin_damage_assessment():
-    return render_template("admin/damage-assessment.html")
+    return render_template("/admin/damage-assessment.html")
 
 @app.route("/admin/farmers")
 @login_required
 def admin_farmers():
-    return render_template("admin/farmers.html")
+    return render_template("/admin/farmers.html")
 
 @app.route("/logout")
 def logout():
