@@ -1,0 +1,119 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}
+    Farmers | AiGRI
+{% endblock %}
+
+{% block extrastyles %} 
+    <link rel="stylesheet" href="../../static/css/farmers.css">
+{% endblock %}
+
+{% block header_title %}
+    Registered Farmers
+{% endblock %}
+
+{% block main %}
+<div class="card">
+    <div class="card-header">
+    <div class="filters" style="margin-bottom: 12px;">
+            <label for="filter-type">Filter by:</label>
+            <select id="filter-type">
+                <option disabled selected>Select</option>
+                <option value="sitio">Sitio</option>
+                <option value="barangay">Barangay</option>
+                <option value="municipality">Municipality</option>
+            </select>
+
+            <select id="filter-value" disabled>
+                <option disabled selected>Select</option>
+            </select>
+
+            <button id="clear-filter" class="btn" type="button">Clear</button>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>RSBSA ID</th>
+                        <th>Names</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Example rows; attach data attributes for filtering -->
+                    <tr data-sitio="Sitio 1" data-barangay="Barangay 2" data-municipality="Municipality 3">
+                        <td>2023-0001</td>
+                        <td>DELA CRUZ, JUAN S.</td>
+                        <td><span class="badge badge-success">Verified</span></td>
+                    </tr>
+                    <tr data-sitio="Sitio 2" data-barangay="Barangay 5" data-municipality="Municipality 3">
+                        <td>2023-0002</td>
+                        <td>SANTOS, MARIA L.</td>
+                        <td><span class="badge badge-warning">Pending</span></td>
+                    </tr>
+                    <tr data-sitio="Sitio 1" data-barangay="Barangay 2" data-municipality="Municipality 4">
+                        <td>2023-0003</td>
+                        <td>GARCIA, ROBERTO</td>
+                        <td><span class="badge badge-danger">Rejected</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filterType = document.getElementById('filter-type');
+    const filterValue = document.getElementById('filter-value');
+    const clearBtn = document.getElementById('clear-filter');
+    const rows = Array.from(document.querySelectorAll('table tbody tr'));
+
+    function populateValues(type) {
+        filterValue.innerHTML = '<option value="">Select a filter</option>';
+        if (!type) { filterValue.disabled = true; return; }
+        const values = new Set();
+        rows.forEach(r => {
+            const v = r.dataset[type];
+            if (v) values.add(v);
+        });
+        Array.from(values).sort().forEach(v => {
+            const opt = document.createElement('option');
+            opt.value = v;
+            opt.textContent = v;
+            filterValue.appendChild(opt);
+        });
+        filterValue.disabled = false;
+    }
+
+    filterType.addEventListener('change', (e) => {
+        const type = e.target.value;
+        populateValues(type);
+        applyFilter();
+    });
+
+    filterValue.addEventListener('change', applyFilter);
+
+    clearBtn.addEventListener('click', () => {
+        filterType.value = 'Select';
+        filterValue.innerHTML = '<option value="">Select</option>';
+        filterValue.disabled = true;
+        rows.forEach(r => r.style.display = '');
+    });
+
+    function applyFilter() {
+        const type = filterType.value;
+        const val = filterValue.value;
+        rows.forEach(r => {
+            if (!type || !val) { r.style.display = ''; return; }
+            const v = r.dataset[type] || '';
+            r.style.display = v === val ? '' : 'none';
+        });
+    }
+});
+</script>
+
+{% endblock %}

@@ -32,23 +32,44 @@ assets_base_path = os.path.join(static_folder_path, 'assets')
 def index():
     return render_template("index.html")
 
-@app.route("/login", methods=["GET", "POST"])
+@app.route("/login")
 def login():
-    """Log user in"""
-    # If user is already logged in, redirect them away from login page
+    """Generic login page"""
+    # If user is already logged in, redirect accordingly
+    if "email" in session:
+        return redirect("/admin/dashboard")
+    if "username" in session:
+        return redirect("/farmer/dashboard")
+
+    return render_template("login.html")
+
+
+@app.route("/admin/login", methods=["POST"])
+def admin_login():
     if "email" in session:
         return redirect("/admin/dashboard")
 
-    # If a user is submitting the login form
     if request.method == "POST":
-        # Auto-login for prototype - no validation needed
         demo_email = "demo@lgu.gov.ph"
         session["email"] = demo_email
         return redirect("/admin/dashboard")
 
-    # GET request
-    return render_template("login.html")
+    return redirect("/login")
 
+
+@app.route("/farmer/login", methods=["POST"])
+def farmer_login():
+    if "username" in session:
+        return redirect("/farmer/dashboard")
+
+    if request.method == "POST":
+        demo_username = "juan"
+        session["username"] = demo_username
+        return redirect("/farmer/dashboard")
+
+    return redirect("/login")
+
+# ADMIN SIDE
 @app.route("/admin/dashboard")
 @login_required
 def admin_dashboard():
@@ -100,6 +121,34 @@ def admin_damage_assessment():
 @login_required
 def admin_farmers():
     return render_template("/admin/farmers.html")
+
+# FARMER SIDE
+@app.route("/farmer/dashboard")
+@login_required
+def farmer_dashboard():
+    """Farmer dashboard"""
+    username = session.get("farmer_username", "juan_delacruz")
+    return render_template("farmer/dashboard.html", username=username)
+
+@app.route("/farmer/insurance-status")
+@login_required
+def farmer_insurance_status():
+    return render_template("/farmer/insurance-status.html")
+
+@app.route("/farmer/my-profile")
+@login_required
+def farmer_my_profile():
+    return render_template("/farmer/my-profile.html")
+
+@app.route("/farmer/documents")
+@login_required
+def farmer_documents():
+    return render_template("/farmer/documents.html")
+
+@app.route("/farmer/transaction-history")
+@login_required
+def farmer_transaction_history():
+    return render_template("/farmer/transaction-history.html")
 
 @app.route("/logout")
 def logout():

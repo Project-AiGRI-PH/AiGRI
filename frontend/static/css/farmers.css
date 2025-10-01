@@ -1,0 +1,114 @@
+/* Farmers page specific styles */
+.card {
+	background: white;
+	border-radius: 8px;
+	box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+	overflow: hidden;
+	margin-bottom: 24px;
+}
+.card-header {
+	padding: 16px 20px;
+	border-bottom: 1px solid #f0f0f0;
+	background: #fff;
+}
+.card-body {
+	padding: 18px 20px;
+}
+
+.table-responsive {
+	width: 100%;
+	overflow-x: auto;
+}
+.table {
+	width: 100%;
+	border-collapse: separate; /* allow vertical spacing */
+	border-spacing: 0 10px; /* vertical gap between rows */
+	margin: 0;
+}
+.table thead th {
+	text-align: left;
+	padding: 12px 16px;
+	font-weight: 700;
+	color: var(--dark-color);
+	background: transparent;
+}
+.table tbody tr { background: white; }
+.table tbody td {
+	padding: 12px 16px;
+	vertical-align: middle;
+	border: none;
+}
+.table.table-striped tbody tr:nth-child(even) { background: #fbfbfb; }
+.table tbody tr td:first-child { border-top-left-radius: 6px; border-bottom-left-radius: 6px; }
+.table tbody tr td:last-child { border-top-right-radius: 6px; border-bottom-right-radius: 6px; }
+
+.badge { display: inline-block; padding: 6px 10px; border-radius: 999px; font-size: 0.85rem; font-weight: 600; color: white; }
+.badge-success { background: var(--success-color); }
+.badge-warning { background: var(--warning-color); }
+.badge-danger { background: var(--danger-color); }
+.badge-info { background: var(--info-color); }
+
+@media (max-width: 600px) {
+	.table thead { display: none; }
+	.table tbody tr { display: block; margin-bottom: 12px; }
+	.table tbody td { display: block; padding: 10px 12px; }
+	.table tbody td::before { content: attr(data-label); font-weight: 600; display: block; margin-bottom: 6px; }
+}
+
+/* Filters alignment */
+.filters {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	justify-content: flex-end; /* align to right */
+	margin-bottom: 12px;
+}
+
+@media (max-width: 600px) {
+	.filters {
+		justify-content: flex-start;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 6px;
+	}
+}
+
+/* Make filter selects match form-group select styling used in insurance-application */
+.filters label {
+	margin-right: 6px;
+	font-weight: 600;
+}
+.filters select {
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-size: 1rem;
+	background: white;
+}
+.filters select:disabled {
+	background: #f7f7f7;
+}
+.filters #clear-filter {
+	padding: 8px 12px;
+	background: transparent;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+@media (max-width: 600px) {
+	.filters select { width: 100%; }
+	.filters #clear-filter { width: 100%; }
+}
+
+/* Ensure both dropdowns look the same length on desktop */
+.filters #filter-type,
+.filters #filter-value {
+	width: 220px; /* fixed width for consistent visual length */
+	max-width: 40%;
+}
+
+@media (min-width: 1200px) {
+	.filters #filter-type,
+	.filters #filter-value { width: 280px; }
+}
+
