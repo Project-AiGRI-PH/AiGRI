@@ -49,69 +49,57 @@ def login():
     # GET request
     return render_template("login.html")
 
-@app.route("/farmer-login", methods=["GET", "POST"])
-def farmer_login():
-    """Log farmer in"""
-    # If farmer is already logged in, redirect them away from login page
-    if "farmer_username" in session:
-        return redirect("/farmer/dashboard")
-
-    # If a farmer is submitting the login form
-    if request.method == "POST":
-        # Auto-login for prototype - no validation needed
-        demo_username = "juan_delacruz"
-        session["farmer_username"] = demo_username
-        return redirect("/farmer/dashboard")
-
-    # GET request - redirect back to main login page
-    return redirect("/login")
-
-@app.route("/farmer/dashboard")
-def farmer_dashboard():
-    """Farmer dashboard"""
-    username = session.get("farmer_username", "juan_delacruz")
-    return render_template("farmer/dashboard.html", username=username)
-
-@app.route("/farmer/insurance-status")
-def farmer_insurance_status():
-    """Farmer insurance status"""
-    username = session.get("farmer_username", "juan_delacruz")
-    return render_template("farmer/insurance-status.html", username=username)
-
-@app.route("/farmer/documents")
-def farmer_documents():
-    """Farmer documents"""
-    username = session.get("farmer_username", "juan_delacruz")
-    return render_template("farmer/documents.html", username=username)
-
-@app.route("/farmer/transaction-history")
-def farmer_transaction_history():
-    """Farmer transaction history"""
-    username = session.get("farmer_username", "juan_delacruz")
-    return render_template("farmer/transaction-history.html", username=username)
-
 @app.route("/admin/dashboard")
 @login_required
 def admin_dashboard():
-    if request.method == "POST":
-        pass
     # email = session.get("email", "demo@lgu.gov.ph")
-    return render_template("admin/dashboard.html")
+    return render_template("/admin/dashboard.html")
 
-@app.route("/admin/register-farm", methods=["GET", "POST"])
+# To do: POST method action for
+@app.route("/admin/insurance-application", methods=["GET", "POST"])
 @login_required
-def admin_register_farm():
-    return render_template("admin/register-farm.html")
+def admin_insurance_application():
+    if request.method == "POST":   
+        form_fields = [
+            "farm_sitio_1", "farm_barangay_1", "farm_municipality_1", "farm_north_1", "farm_south_1", "farm_east_1", "farm_west_1", "farm_variety_1",
+        ]
+        
+        data = {
+            "farmer_last": "DELA CRUZ",
+            "farmer_first": "JUAN",
+            "farmer_middle": "SANTOS",
+            "farmer_sitio": "Sitio 1",
+            "farmer_barangay": "Barangay 2",
+            "farmer_municipality": "Municipality 3",
+            "farmer_province": "Province 4",
+            "farmer_cell": "09123456789",
+            "farmer_bank name": "LandBank of the Philippines",
+            "farmer_bank account No.": "12345",
+            "farmer_bank branch / address": "Cebu City",
+            "farm_province": "Leyte"
+        }
+
+        for field in form_fields:
+            value = request.form.get(field)
+            data[field] = value
+        
+        # Use context manager - automatic cleanup
+        with RegFormStamper(pdf_path) as stamper:
+            stamper.text_search(7, data, "../frontend/static/assets/stamped-sample-method1.pdf")
+
+        return redirect("/admin/dashboard")
+    
+    return render_template("/admin/insurance-application.html")
 
 @app.route("/admin/damage-assessment")
 @login_required
 def admin_damage_assessment():
-    return render_template("admin/damage-assessment.html")
+    return render_template("/admin/damage-assessment.html")
 
 @app.route("/admin/farmers")
 @login_required
 def admin_farmers():
-    return render_template("admin/farmers.html")
+    return render_template("/admin/farmers.html")
 
 @app.route("/logout")
 def logout():
