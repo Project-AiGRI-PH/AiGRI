@@ -2,6 +2,9 @@ import os
 from flask import Flask, render_template, request, redirect, session
 from flask_session import Session
 
+# custom library
+from helpers import apology, login_required
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 template_folder_path = os.path.join(current_dir, '..', 'frontend', 'templates')
@@ -27,7 +30,7 @@ def index():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    """Log user i"""
+    """Log user in"""
     # If user is already logged in, redirect them away from login page
     if "email" in session:
         return redirect("/dashboard")
@@ -41,6 +44,12 @@ def login():
 
     # GET request
     return render_template("login.html")
+
+@app.route("/admin/dashboard")
+@login_required
+def admin_dashboard():
+    email = session.get("email", "demo@lgu.gov.ph")
+    return render_template("admin/dashboard.html", email=email)
 
 @app.route("/logout")
 def logout():
