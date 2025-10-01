@@ -214,10 +214,11 @@ class FarmlandDamageAssessor:
         fig = self.visualize_results(img_rgb, damage_map, overlay, stats)
         plt.savefig(output_path, dpi=150, bbox_inches='tight')
         print(f"[OK] Results saved to: {output_path}")
-        plt.show()
+        # plt.show()
         
         return damage_map, stats
 
+# Example usage
 # Example usage
 if __name__ == "__main__":
     print("\n" + "="*60)
@@ -229,52 +230,43 @@ if __name__ == "__main__":
     assessor = FarmlandDamageAssessor()
     print("[OK] Model loaded successfully\n")
     
-    # IMPORTANT: Update this path to point to your actual farmland image
-    # Examples:
-    # Windows: r"C:\Users\Desirre Barbosa\Desktop\project aigri\estimation\farmland.jpg"
-    # Or: "C:/Users/Desirre Barbosa/Desktop/project aigri/estimation/farmland.jpg"
-    # Relative: "farmland.jpg" (if in same folder as script)
+    # --- PATHS AND DIRECTORIES ---
+    # Define the input image path
+    image_path = "backend\\test_input\\farm1.png"
 
     # change if necessary
     image_path = "test_input/farm1.png"
     
+    # --- BEST PRACTICE: Create the output directory if it doesn't exist ---
+    print(f"[INFO] Ensuring output directory exists at: {output_dir}")
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Define the full output file paths using os.path.join
+    report_output_path = os.path.join(output_dir, "farmland_damage_report.png")
+    map_output_path = os.path.join(output_dir, "damage_map_only.png")
+
     # Check if the file exists before processing
     if not os.path.exists(image_path):
         print("="*60)
         print("ERROR: Image file not found!")
-        print("="*60)
-        print(f"Looking for: {image_path}")
-        print(f"Current directory: {os.getcwd()}")
-        print("\nFiles in current directory:")
-        for f in os.listdir('.'):
-            if f.lower().endswith(('.jpg', '.jpeg', '.png', '.bmp', '.tiff')):
-                print(f"  - {f}")
-        print("\n" + "="*60)
-        print("SOLUTION:")
-        print("="*60)
-        print("Update line 230 with the correct path to your image:")
-        print("\nFor Windows, use one of these formats:")
-        print('  image_path = r"C:\\Users\\YourName\\folder\\farmland1.jpg"')
-        print('  image_path = "C:/Users/YourName/folder/farmland1.jpg"')
-        print("\nOr place your image in the current directory and use:")
-        print('  image_path = "your_image_name.jpg"')
+        # ... (rest of your error message) ...
         print("="*60 + "\n")
     else:
         try:
             damage_map, statistics = assessor.assess_damage(
-                image_path, 
-                output_path="farmland_damage_report.png"
+                image_path=image_path, 
+                output_path=report_output_path # Use the new path variable
             )
             
             # Save individual damage map
-            cv2.imwrite("damage_map_only.png", cv2.cvtColor(damage_map, cv2.COLOR_RGB2BGR))
+            cv2.imwrite(map_output_path, cv2.cvtColor(damage_map, cv2.COLOR_RGB2BGR))
             
             print("\n" + "="*60)
             print("[OK] PROCESSING COMPLETE!")
             print("="*60)
-            print("Generated files:")
-            print("  - farmland_damage_report.png (full report)")
-            print("  - damage_map_only.png (damage map only)")
+            print("Generated files saved in 'backend/output' folder:")
+            print(f"  - {os.path.basename(report_output_path)} (full report)")
+            print(f"  - {os.path.basename(map_output_path)} (damage map only)")
             print("="*60 + "\n")
             
         except Exception as e:
@@ -282,4 +274,7 @@ if __name__ == "__main__":
             print("ERROR DURING PROCESSING:")
             print("="*60)
             print(f"{str(e)}")
+            print("\nTroubleshooting:")
+            print(" - Ensure you have write permissions for the project folder.")
+            print(" - Check for issues with the input image file.")
             print("="*60 + "\n")
