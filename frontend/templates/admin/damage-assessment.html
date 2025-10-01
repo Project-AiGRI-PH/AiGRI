@@ -141,7 +141,6 @@
         </div>
 
         <style>
-            /* Modal Styles */
             .modal {
                 position: fixed;
                 z-index: 1000;
@@ -296,10 +295,8 @@
         
 
         <script>
-            // Initialize form on page load
             document.addEventListener('DOMContentLoaded', function() {
                 
-                // Get the farm boundary image element
                 const farmBoundaryImg = document.getElementById('farm-boundary-img');
 
                 if (farmBoundaryImg) {
@@ -307,7 +304,6 @@
                     console.log('Farm boundary hidden on page load');
                 }
                 
-                // Set default date to today
                 const dateInput = document.getElementById('disaster-date');
                 if (dateInput) {
                     const today = new Date();
@@ -316,17 +312,14 @@
                     console.log('Default date set to:', formattedDate);
                 }
                 
-                // Initialize form submission
                 const form = document.getElementById('damage-assessment-form');
                 form.addEventListener('submit', async function(e) {
                     e.preventDefault();
                     
-                    // Validate form
                     if (!validateForm(form)) {
                         return;
                     }
                     
-                    // Prepare assessment data
                     const assessmentData = {
                         farmerId: document.getElementById('farmer-select').value,
                         disasterType: document.getElementById('disaster-type').value,
@@ -336,15 +329,11 @@
                     };
                     
                     try {
-                        // Show loading modal
                         showLoadingModal();
                         
-                        // Simulate API processing time (3 seconds)
                         setTimeout(() => {
-                            // Hide loading modal
                             hideLoadingModal();
                             
-                            // Show assessment report
                             showAssessmentReport(assessmentData);
                         }, 3000);
                         
@@ -355,20 +344,15 @@
                     }
                 });
                 
-                // Handle image uploads
                 document.getElementById('after-images').addEventListener('change', function() {
                     console.log('After images change event triggered');
                     console.log('Files selected:', this.files);
                     
-                    // Show farm boundary when images are uploaded
                     if (this.files && this.files.length > 0) {
                         if (farmBoundaryImg) {
                             farmBoundaryImg.style.display = 'block'; // Make the image visible
                             console.log('Farm boundary displayed - image uploaded');
                         }
-                        // In a real implementation, this would upload to your backend
-                        // and set the actual URL for the uploaded image.
-                        // For this example, we'll just set a dummy URL.
                         document.getElementById('after-image-url').value = 'https://example.com/after.jpg'; 
                     } else {
                         if (farmBoundaryImg) {
@@ -380,7 +364,6 @@
                 });
             });
  
-            // Modal Functions
             function showLoadingModal() {
                 document.getElementById('loadingModal').style.display = 'flex';
                 console.log('Loading modal shown');
@@ -392,7 +375,6 @@
             }
 
             function showAssessmentReport(assessmentData) {
-                // Populate report with data
                 const farmerText = document.querySelector('#farmer-select option:checked').textContent;
                 const disasterText = document.querySelector('#disaster-type option:checked').textContent;
                 
@@ -400,7 +382,6 @@
                 document.getElementById('report-disaster').textContent = disasterText;
                 document.getElementById('report-date').textContent = assessmentData.disasterDate;
                 
-                // Show report modal
                 document.getElementById('reportModal').style.display = 'flex';
                 console.log('Assessment report shown');
             }
@@ -411,17 +392,9 @@
             }
 
             function exportToPDF() {
-                // Simulate PDF export
                 alert('PDF export functionality.');
                 console.log('PDF export initiated');
-                
-                // In a real implementation, you could use libraries like:
-                // - jsPDF for client-side PDF generation
-                // - Send data to backend for server-side PDF generation
-                // - Use window.print() for basic PDF printing
-                
-                // For now, we'll just trigger the browser's print dialog
-                // which allows saving as PDF
+
                 setTimeout(() => {
                     window.print();
                 }, 500);
@@ -430,13 +403,11 @@
             function saveReport() {
                 alert('Save report functionality.');
                 console.log('Save report initiated');
-                // Implement save report logic here
             }
 
             function validateForm(form) {
                 let isValid = true;
                 
-                // Check required fields
                 const requiredFields = form.querySelectorAll('[required]');
                 requiredFields.forEach(field => {
                     if (!field.value.trim()) {
