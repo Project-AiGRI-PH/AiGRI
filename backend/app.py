@@ -45,6 +45,47 @@ def login():
     # GET request
     return render_template("login.html")
 
+@app.route("/farmer-login", methods=["GET", "POST"])
+def farmer_login():
+    """Log farmer in"""
+    # If farmer is already logged in, redirect them away from login page
+    if "farmer_username" in session:
+        return redirect("/farmer/dashboard")
+
+    # If a farmer is submitting the login form
+    if request.method == "POST":
+        # Auto-login for prototype - no validation needed
+        demo_username = "juan_delacruz"
+        session["farmer_username"] = demo_username
+        return redirect("/farmer/dashboard")
+
+    # GET request - redirect back to main login page
+    return redirect("/login")
+
+@app.route("/farmer/dashboard")
+def farmer_dashboard():
+    """Farmer dashboard"""
+    username = session.get("farmer_username", "juan_delacruz")
+    return render_template("farmer/dashboard.html", username=username)
+
+@app.route("/farmer/insurance-status")
+def farmer_insurance_status():
+    """Farmer insurance status"""
+    username = session.get("farmer_username", "juan_delacruz")
+    return render_template("farmer/insurance-status.html", username=username)
+
+@app.route("/farmer/documents")
+def farmer_documents():
+    """Farmer documents"""
+    username = session.get("farmer_username", "juan_delacruz")
+    return render_template("farmer/documents.html", username=username)
+
+@app.route("/farmer/transaction-history")
+def farmer_transaction_history():
+    """Farmer transaction history"""
+    username = session.get("farmer_username", "juan_delacruz")
+    return render_template("farmer/transaction-history.html", username=username)
+
 @app.route("/admin/dashboard")
 @login_required
 def admin_dashboard():

@@ -1,0 +1,103 @@
+{% extends "farmer/layout.html" %}
+
+{% block title %}
+    Transaction History | AiGRI Farmer Portal
+{% endblock %}
+
+{% block header_title %}
+    Transaction History
+{% endblock %}
+
+{% block main %}
+    <div class="dashboard-cards">
+        <div class="dashboard-card">
+            <h3>Total Premium Paid</h3>
+            <div class="card-value" style="color: var(--primary-color);">₱1,350</div>
+            <div class="card-description">This year (3 seasons)</div>
+        </div>
+        <div class="dashboard-card">
+            <h3>Claims Received</h3>
+            <div class="card-value" style="color: var(--success-color);">₱8,500</div>
+            <div class="card-description">Typhoon damage compensation</div>
+        </div>
+        <div class="dashboard-card">
+            <h3>Pending Payments</h3>
+            <div class="card-value" style="color: var(--warning-color);">₱0</div>
+            <div class="card-description">All payments up to date</div>
+        </div>
+        <div class="dashboard-card">
+            <h3>Next Premium Due</h3>
+            <div class="card-value" style="color: var(--info-color);">₱450</div>
+            <div class="card-description">Dry Season 2025</div>
+        </div>
+    </div>
+
+    <div class="recent-activity">
+        <h3>Recent Transactions</h3>
+        <div class="activity-item">
+            <div class="activity-icon">
+                <i style="color: var(--success-color);"></i>
+            </div>
+            <div class="activity-details">
+                <h4>Claim Payment Received</h4>
+                <p><strong>₱8,500</strong> - Typhoon damage compensation for 1.5 hectares</p>
+                <small style="color: #666;">September 25, 2024 | Reference: CLM-2024-001</small>
+            </div>
+        </div>
+        <div class="activity-item">
+            <div class="activity-icon">
+                <i style="color: var(--primary-color);"></i>
+            </div>
+            <div class="activity-details">
+                <h4>Premium Payment</h4>
+                <p><strong>₱450</strong> - Wet Season 2024 insurance premium</p>
+                <small style="color: #666;">August 15, 2024 | Reference: PRM-2024-003</small>
+            </div>
+        </div>
+        <div class="activity-item">
+            <div class="activity-icon">
+                <i style="color: var(--primary-color);"></i>
+            </div>
+            <div class="activity-details">
+                <h4>Premium Payment</h4>
+                <p><strong>₱450</strong> - Dry Season 2024 insurance premium</p>
+                <small style="color: #666;">May 10, 2024 | Reference: PRM-2024-002</small>
+            </div>
+        </div>
+        <div class="activity-item">
+            <div class="activity-icon">
+                <i style="color: var(--primary-color);"></i>
+            </div>
+            <div class="activity-details">
+                <h4>Premium Payment</h4>
+                <p><strong>₱450</strong> - Wet Season 2023 insurance premium</p>
+                <small style="color: #666;">January 20, 2024 | Reference: PRM-2024-001</small>
+            </div>
+        </div>
+        <div class="activity-item">
+            <div class="activity-icon">
+                <i style="color: var(--success-color);"💰</i>
+            </div>
+            <div class="activity-details">
+                <h4>Claim Payment Received</h4>
+                <p><strong>₱3,200</strong> - Drought damage compensation for 0.8 hectares</p>
+                <small style="color: #666;">November 15, 2023 | Reference: CLM-2023-002</small>
+            </div>
+        </div>
+        <div class="activity-item">
+            <div class="activity-icon">
+                <i style="color: var(--primary-color);"></i>
+            </div>
+            <div class="activity-details">
+                <h4>Initial Premium Payment</h4>
+                <p><strong>₱450</strong> - First insurance premium payment</p>
+                <small style="color: #666;">June 1, 2023 | Reference: PRM-2023-001</small>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 30px; text-align: center;">
+        <button class="btn-secondary" onclick="alert('Transaction export.')">Export Transaction History</button>
+        <button class="btn-primary" onclick="alert('Payment portal.')" style="margin-left: 15px;">Make Payment</button>
+    </div>
+{% endblock %}
