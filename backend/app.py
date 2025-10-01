@@ -33,14 +33,14 @@ def login():
     """Log user in"""
     # If user is already logged in, redirect them away from login page
     if "email" in session:
-        return redirect("/dashboard")
+        return redirect("/admin/dashboard")
 
     # If a user is submitting the login form
     if request.method == "POST":
         # Auto-login for prototype - no validation needed
         demo_email = "demo@lgu.gov.ph"
         session["email"] = demo_email
-        return redirect("/dashboard")
+        return redirect("/admin/dashboard")
 
     # GET request
     return render_template("login.html")
