@@ -1,0 +1,20 @@
+<!-- For http (errort) response status codes -->
+{% extends "layout.html" %}
+
+{% block title %}
+    {{ top }} Apology
+{% endblock %}
+
+{% block navlist %}
+    <li><a href="/">Home</a></li>
+    <li><a href="/">About</a></li>
+{% endblock %}
+
+    {% block main %}
+        <section class="hero">
+            <div class="container">
+                <p>Status Code: {{ top }}</p>
+                <p>Apology Message: {{ bottom }}</p>
+            </div>
+        </section>
+    {% endblock %}

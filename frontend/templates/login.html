@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Login | AiGRI
+{% endblock %}
+
+{% block navlist %}
+    <li><a href="/">Home</a></li>
+    <li><a href="/">About</a></li>
+{% endblock %}
+
+    {% block main %}
+        <main class="login-main">
+            <div class="container">
+                <h1>Access AiGRI Portal</h1>
+                <p class="subtitle">Select your login type to continue</p>
+                
+                <div class="login-cards">
+                    <div class="login-card" id="admin-login">
+                        <div class="card-icon">
+                            <img src="../static/assets/login-image.svg" alt="Government Building">
+                        </div>
+                        <h2>Municipal Agriculture Office</h2>
+                        <p>For LGU staff to register farms, initiate assessments, and manage claims</p>
+                        
+                        <form action="/login" method="post" id="admin-login-form">
+                            
+                            <div class="form-group">
+                                <label for="admin-email">Email</label>
+                                <input autocomplete="off" name="email" value="{{ email or '' }}" placeholder="juandelacruz@gmail.com" type="email" id="admin-email">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="admin-password">Password</label>
+                                <input autocomplete="off" autofocus name="password" placeholder="Password" type="password" id="admin-password">
+                            </div>
+                            
+                            <!-- Existing error -->
+                            <!-- Add styles -->
+                            {% if error %}
+                                <p class="error-message">{{ error }}</p>
+                            {% endif %}
+
+                            <button type="submit" class="btn-login">Login</button>
+                        </form>
+                        
+                    </div>
+                    
+                    <div class="login-card" id="farmer-login">
+                        <div class="card-icon">
+                            <img src="../static/assets/login-image.svg" alt="Farmer">
+                        </div>
+                        <h2>Farmer Portal</h2>
+                        <p>For farmers to check claim status and insurance information</p>
+            
+                        <form action="/farmer-login" method="post" id="farmer-login-form">
+                            
+                            <div class="form-group">
+                                <label for="farmer-username">Username</label>
+                                <input autocomplete="off" name="username" placeholder="Enter your username" type="text" id="farmer-username">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="farmer-password">Password</label>
+                                <input autocomplete="off" name="password" placeholder="Password" type="password" id="farmer-password">
+                            </div>
+                            
+                            <!-- Error display -->
+                            {% if farmer_error %}
+                                <p class="error-message">{{ farmer_error }}</p>
+                            {% endif %}
+
+                            <button type="submit" class="btn-login">Login</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="login-info">
+                    <p>Don't have access? Contact your Municipal Agriculture Office for assistance.</p>
+                    <p>This system is part of the Philippine Department of Agriculture's digital transformation initiative.</p>
+                </div>
+            </div>  
+        </main>
+    {% endblock %}
+    <!-- <script src="js/auth.js"></script> -->
