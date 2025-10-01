@@ -1,0 +1,118 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    AiGRI - AI-Powered Crop Insurance
+{% endblock %}
+
+{% block extrastyles %} 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+{% endblock %}
+
+{% block navlist %}
+    <li><a href="#about">About</a></li>
+    <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="/login">Login</a></li>
+{% endblock %}
+
+    {% block main %}
+        <section class="hero">
+            <div class="container">
+                <h1>Empowering Filipino Farmers Through AI-Powered Insurance</h1>
+                <p>Transforming agricultural risk management with transparent, data-driven solutions</p>
+                <div class="cta-buttons">
+                    <!--WILL CHANGE BUTTON STYLES IN syles.css later-->
+
+                    <!-- Read more on anchor tag accessing a route directly not being able to specify [get, post, etc.]-->
+                    <a href="/login" class="btn-login">Get Started</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about-section">
+            <div class="container">
+                <h2>About AiGRI</h2>
+                <p>AiGRI is an innovative platform developed by the University of the Philippines Tacloban that leverages drone technology and artificial intelligence to streamline agricultural insurance processes for smallholder farmers in the Philippines.</p>
+                <p>Our solution aligns with the Philippine Development Plan 2023-2028 and supports the National Strategy for Financial Inclusion by providing:</p>
+                <ul>
+                    <li>Automated crop damage assessment</li>
+                    <li>Tamper-proof digital loss certificates</li>
+                    <li>Integration with PCIC</li>
+                    <li>Climate resilience data for policymakers</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="stats" class="stats-section">
+            <div class="container">
+                <h2>The Need for AiGRI</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>9.08%</h3>
+                        <p>Agriculture's contribution to Philippine GDP (2024)</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>< 33%</h3>
+                        <p>Of farmers covered by crop insurance</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>42%</h3>
+                        <p>Of transient poor work in agriculture</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>2M</h3>
+                        <p>Agriculture jobs lost (2023-2025)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="workflow-section">
+            <div class="container">
+                <h2>How AiGRI Works</h2>
+                <div class="workflow-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3>Farm Registration</h3>
+                        <p>Farmers register their plots with municipal offices using GPS boundary mapping</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3>Baseline Imaging</h3>
+                        <p>LGU drone operators capture pre-disaster crop health images</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3>Damage Assessment</h3>
+                        <p>Post-disaster drone images are analyzed by AI to generate precise damage reports</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h3>Automated Claims</h3>
+                        <p>Digital certificates are generated for immediate submission to PCIC</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    {% endblock %}
+
+    {% block footer %}
+        <div class="footer-grid">
+            <div class="footer-col">
+                <img src="static/assets/aigri-logo-white.png" alt="AiGRI Logo" class="footer-logo">
+                <p>AI Meets Agriculture and Policy Meets the People</p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                </ul>
+            </div>
+        </div>
+    {% endblock %}
+
+    <!-- Scripts here -->
+    <!-- <script src="static/js/main.js"></script> -->

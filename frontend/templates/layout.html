@@ -1,0 +1,41 @@
+ <!DOCTYPE html>
+ <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %} {% endblock %}</title>
+        <link rel="stylesheet" href="../static/css/styles.css">
+        {% block extrastyles %} {% endblock %}
+    </head>
+
+    <body>
+        <header class="main-header">
+            <div class="container nav-container">
+                <a href="/" class="logo">
+                    <img src="../static/assets/aigri-logo.png" alt="AiGRI Logo">
+                    <!--<span>Assess, Insure, Guarantee, Respond, Include</span>-->
+                    <span>AiGRI</span>
+                </a>
+                <nav>
+                    <ul class="nav-menu">
+                        {% block navlist %} {% endblock %}
+                    </ul>
+                </nav>
+            </div>
+        </header>    
+
+        {% block main %} {% endblock %}
+
+        <footer>
+            <div class="container">
+                {% block footer %} {% endblock %}
+                <div class="copyright">
+                    <p>&copy; Project AiGRI 2025. All rights reserved.</p>
+                    <p></p> 
+                    <!-- will add line here -->
+                </div>
+            </div>
+        </footer>
+
+    </body>
+ </html>
