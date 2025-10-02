@@ -26,7 +26,6 @@ app.config["SESSION_TYPE"] = "filesystem"       # Set to "filesystem" so that se
 Session(app)
 
 pdf_path = os.path.join(static_folder_path, 'assets', 'RC-UPI-01_Application-for-Crop-Insurance.pdf')
-stamper = RegFormStamper(pdf_path)
 damage_ass = FarmlandDamageAssessor()
 
 # asset path
@@ -85,8 +84,9 @@ def admin_dashboard():
 @login_required
 def admin_insurance_application():
     if request.method == "POST":   
+        # Do the stamping
         form_fields = [
-            "farm_sitio_1", "farm_barangay_1", "farm_municipality_1", "farm_north_1", "farm_south_1", "farm_east_1", "farm_west_1", "farm_variety_1",
+            "farm_sitio_1", "farm_barangay_1", "farm_municipality_1", # Part 1
         ]
         
         data = {
@@ -108,9 +108,13 @@ def admin_insurance_application():
             value = request.form.get(field)
             data[field] = value
         
-        # Context manager - automatic cleanup
-        with RegFormStamper(pdf_path) as stamper:
+        # Create a NEW stamper instance for each request
+        stamper = RegFormStamper(pdf_path)
+        
+        try:
             stamper.text_search(7, data, "../frontend/static/assets/stamped-sample-method1.pdf")
+        finally:
+            stamper.close()
 
         return redirect("/admin/dashboard")
     
