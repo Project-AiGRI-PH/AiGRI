@@ -17,6 +17,7 @@
 
 * Login 
   - Municipal Agriculture Office
+  - Philippine Crop Insurance Corporation
   - Farmer Portal
 
 * Municipal Agriculture Office 
@@ -36,6 +37,10 @@
   - Help
   - Logout
 
+* Philippine Crop Insurance Corporation
+  - Dash board
+  - Approve/Decline Insurance Claims
+
 ## How To Use
 To be deployed
 
@@ -47,6 +52,7 @@ To contribute
 ## AI Use
 - Claude.ai (used in troubleshooting issues in VS Code)
 - Copilot (used for debugging)
+- Gemini (used for debugging and refinement of codes in farm_damage_assessment.py preprocessing of images)
 
 
 ## Credits
@@ -85,4 +91,5 @@ MIT
 > [amitmerchant.com](https://www.amitmerchant.com) &nbsp;&middot;&nbsp;
 > GitHub [@amitmerchant1990](https://github.com/amitmerchant1990) &nbsp;&middot;&nbsp;
 > Twitter [@amit_merchant](https://twitter.com/amit_merchant)
+
 
