@@ -1,8 +1,13 @@
 import os
 import cv2
+import time
+import atexit
+import os
+import requests
 
 from flask import Flask, render_template, request, redirect, session
 from flask_session import Session
+from apscheduler.schedulers.background import BackgroundScheduler
 
 # custom library
 from helpers import apology, login_required
@@ -17,6 +22,28 @@ static_folder_path = os.path.join(current_dir, '..', 'frontend', 'static')
 app = Flask(__name__,
             template_folder=template_folder_path,
             static_folder=static_folder_path)
+
+def keep_alive():
+    """Ping the app itself to prevent it from sleeping"""
+    try:
+        # Get the app URL from environment variable (Render provides this)
+        app_url = os.environ.get('RENDER_EXTERNAL_URL', 'http://localhost:5000')
+        response = requests.get(f"{app_url}/health", timeout=30)
+        print(f"Keep-alive ping: {response.status_code} at {time.strftime('%A, %d. %B %Y %I:%M:%S %p')}")
+    except Exception as e:
+        print(f"Keep-alive failed: {e} at {time.strftime('%A, %d. %B %Y %I:%M:%S %p')}")
+
+# Health check endpoint for keep-alive pings
+@app.route("/health")
+def health_check():
+    return {"status": "healthy", "timestamp": time.strftime("%A, %d. %B %Y %I:%M:%S %p")}, 200
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=keep_alive, trigger="interval", seconds=600) # Ping every 10 minutes
+scheduler.start()
+
+# Shut down the scheduler when exiting the app
+atexit.register(lambda: scheduler.shutdown())
 
 # Server side sessions
 app.config["SESSION_PERMANENT"] = False     # Sessions expire when the browser is closed
