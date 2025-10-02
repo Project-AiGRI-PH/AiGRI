@@ -14,11 +14,11 @@
 
 {% block main %}
 <div class="form-container">
-    <h2 class="form-title">Verify RSBSA ID</h2>
+    <h2 class="form-title">Verify RSBSA Farmer ID</h2>
     
     <div id="verify-rsbsa">
         <div class="form-group">
-            <label for="rsbsa-id">RSBSA ID No.</label>
+            <label for="rsbsa-id">RSBSA Farmer ID No.</label>
             <input type="text" id="rsbsa-id" name="rsbsa_id" placeholder="Enter RSBSA ID Number" required>
         </div>
         
@@ -34,6 +34,33 @@
         <div class="loading-spinner"></div>
         <div class="loading-text">Fetching Data</div>
         <div class="loading-subtext">Please wait while we process your request...</div>
+    </div>
+</div>
+<!-- PDF Preview Modal -->
+<style>
+.pdf-modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 2000; }
+.pdf-modal-backdrop{ position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
+.pdf-modal-content{ position: relative; background: #fff; width: 92%; max-width: 1000px; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 2001; display:flex; flex-direction:column; }
+.pdf-modal-header{ display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:1px solid #eee; }
+.pdf-modal-body{ padding:0; }
+.pdf-modal-actions{ display:flex; justify-content:flex-end; gap:10px; padding:12px 16px; border-top:1px solid #eee; background:#fafafa; }
+.btn-close{ background:none; border:none; font-size:1.5rem; line-height:1; cursor:pointer; }
+.pdf-modal iframe{ width:100%; height:70vh; border:0; }
+</style>
+<div id="pdfModal" class="pdf-modal" aria-hidden="true">
+    <div class="pdf-modal-backdrop" id="pdfModalBackdrop"></div>
+    <div class="pdf-modal-content" role="dialog" aria-modal="true" aria-labelledby="pdfModalTitle">
+        <div class="pdf-modal-header">
+            <h3 id="pdfModalTitle">Preview Stamped PDF</h3>
+            <button id="pdfModalClose" class="btn-close" aria-label="Close">&times;</button>
+        </div>
+        <div class="pdf-modal-body">
+            <iframe id="pdfPreviewFrame" src="/static/assets/stamped-sample-method1.pdf"></iframe>
+        </div>
+        <div class="pdf-modal-actions">
+            <button id="pdfModalCancel" type="button" class="btn btn-secondary">Cancel</button>
+            <button id="pdfModalConfirm" type="button" class="btn btn-primary">Confirm & Submit</button>
+        </div>
     </div>
 </div>
 
@@ -169,7 +196,12 @@ document.addEventListener('DOMContentLoaded', function() {
             currentStep++;
             updateFormSteps();
         } else {
-            document.getElementById('insurance-application-form').submit();
+            // open PDF preview modal instead of direct submit
+            if (typeof window.showPdfModal === 'function') {
+                window.showPdfModal();
+            } else {
+                document.getElementById('insurance-application-form').submit();
+            }
         }
     });
 
@@ -221,6 +253,55 @@ document.addEventListener('DOMContentLoaded', function() {
     
     updateFormSteps();
 });
+</script>
+
+<script>
+// Intercept form submit to show PDF preview modal
+(function(){
+    var form = document.getElementById('insurance-application-form');
+    var pdfModal = document.getElementById('pdfModal');
+    var pdfBackdrop = document.getElementById('pdfModalBackdrop');
+    var pdfClose = document.getElementById('pdfModalClose');
+    var pdfCancel = document.getElementById('pdfModalCancel');
+    var pdfConfirm = document.getElementById('pdfModalConfirm');
+
+    function openModal() {
+        pdfModal.style.display = 'flex';
+        pdfModal.setAttribute('aria-hidden','false');
+        // trap focus briefly
+        pdfConfirm.focus();
+    }
+
+    function closeModal() {
+        pdfModal.style.display = 'none';
+        pdfModal.setAttribute('aria-hidden','true');
+    }
+
+    // intercept submit
+    form.addEventListener('submit', function(e){
+        // if modal already open allow submit
+        if (pdfModal.getAttribute('aria-hidden') === 'false') return true;
+
+        e.preventDefault();
+        openModal();
+    });
+
+    // wire close/cancel
+    pdfBackdrop.addEventListener('click', closeModal);
+    pdfClose.addEventListener('click', closeModal);
+    pdfCancel.addEventListener('click', closeModal);
+
+    // confirm -> submit form programmatically
+    pdfConfirm.addEventListener('click', function(){
+        closeModal();
+        form.submit();
+    });
+
+    // expose a convenience method to open the modal (used by the next button)
+    window.showPdfModal = function() {
+        openModal();
+    };
+})();
 </script>
 
 {% endblock %}
